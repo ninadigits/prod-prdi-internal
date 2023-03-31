@@ -36,7 +36,7 @@ plugins:
   - serverless-api-gateway-caching
   - serverless-middleware
   - serverless-webpack
-  - serverless-domain-manager
+  # - serverless-domain-manager
 
 useDotenv: true
 
@@ -52,6 +52,8 @@ provider:
   runtime: nodejs16.x
   region: ap-southeast-3
   timeout: 30
+  stage: prod
+  stackName: prod-prdi-internal
   # apiKeys:
   #   - apikey_1_${self:custom.stage}
   environment:

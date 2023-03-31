@@ -2,7 +2,7 @@
 
 ## Project Specifications
 
-https://docs.google.com/document/d/1h4NT7diVp2goA-lUliqXy583yLTPybpF9B069X9vt8M/edit#heading=h.jsucoehhepno
+https://docs.google.com/document/d/15tqIJwmrwpTggtG_bRD5ImDh2lf4HTm96k1xmtI5h84/edit
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/en/)
@@ -13,6 +13,7 @@ https://docs.google.com/document/d/1h4NT7diVp2goA-lUliqXy583yLTPybpF9B069X9vt8M/
 ## Technical stacks
 - [Serverless](https://www.serverless.com/): Build applications comprised of microservices that run in response to events, auto-scale for you, and only charge you when they run.
 - [Amazon Cloudwatch](https://aws.amazon.com/cloudwatch): Monitoring and observability service built for DevOps engineers, developers, site reliability engineers (SREs), and IT managers
+- [Amazon Cloudformation](https://aws.amazon.com/cloudformation): AWS CloudFormation lets developer to model, provision, and manage AWS and third-party resources by treating infrastructure as code
 - [Amazon API Gateway](https://aws.amazon.com/api-gateway/): A fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale. 
 - [Amazon S3](https://aws.amazon.com/s3/): Object storage built to store and retrieve any amount of data from anywhere
 - [Amazon IAM](https://aws.amazon.com/iam/): Securely manage access to AWS services and resources
