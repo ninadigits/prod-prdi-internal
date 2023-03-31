@@ -1,0 +1,22 @@
+# package directories
+node_modules
+jspm_packages
+package-lock.json
+yarn-error.log
+.DS_Store
+
+# Serverless directories
+.serverless
+
+# environment variables
+.env
+.env.*
+!.env.example
+
+# Webpack directories
+.webpack
+.middleware
+
+# serverless backup
+.serverless_*
+.middleware

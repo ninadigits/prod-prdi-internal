@@ -1,0 +1,222 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: prod-prdi-internal
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '3'
+
+# you can add packaging information here
+#package:
+#  patterns:
+#    - '!exclude-me.js'
+#    - '!exclude-me-dir/**'
+#    - include-me.js
+#    - include-me-dir/**
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  # - serverless-plugin-split-stacks
+  - serverless-prune-plugin
+  - serverless-api-gateway-caching
+  - serverless-middleware
+  - serverless-webpack
+  - serverless-domain-manager
+
+useDotenv: true
+
+configValidationMode: error
+
+# enable this to separate lambda function package file for optimization, this will take more time to deploy (in production)
+package:
+  individually: true
+
+provider:
+  endpointType: REGIONAL
+  name: aws
+  runtime: nodejs16.x
+  region: ap-southeast-3
+  timeout: 30
+  # apiKeys:
+  #   - apikey_1_${self:custom.stage}
+  environment:
+    # STAGE: ${self:custom.stage}
+    ACCESS_TOKEN_SECRET: ${env:ACCESS_TOKEN_SECRET}
+    REFRESH_TOKEN_SECRET: ${env:REFRESH_TOKEN_SECRET}
+    NODE_TLS_REJECT_UNAUTHORIZED: ${env:NODE_TLS_REJECT_UNAUTHORIZED}
+    GET_ORDER_LAB_TEST_TRANSACTION: ${env:GET_ORDER_LAB_TEST_TRANSACTION}
+    GET_ORDER_LAB_TEST_BY_ID_TRANSACTION: ${env:GET_ORDER_LAB_TEST_BY_ID_TRANSACTION}
+    GET_ORDER_HEALTH_SHOP: ${env:GET_ORDER_HEALTH_SHOP}
+    DEFAULT_TOKEN: ${env:DEFAULT_TOKEN}
+    DB_USERNAME: ${env:DB_USERNAME}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_HOST: ${env:DB_HOST}
+    DB_NAME: ${env:DB_NAME}
+    DB_DIALECT: ${env:DB_DIALECT}
+    DB_PORT: ${env:DB_PORT}
+  # cors:
+  #   origin: '*'
+  #   headers:
+  #     - Content-Type
+  #     - X-Amz-Date
+  #     - Authorization
+  #     - permissions
+  #     - X-Api-Key
+  #     - X-Amz-Security-Token
+  #     - X-Amz-User-Agent
+  #     - Access-Control-Allow-Origin
+  #   allowCredentials: false
+  tracing:
+    lambda: true # optional, enables tracing for all functions (can be true (true equals 'Active') 'Active' or 'PassThrough')
+  # iamRoleStatements:
+  # - Effect: Allow
+  #   Action:
+  #     - logs:DescribeLogGroups
+  #     - logs:DescribeLogStreams
+  #     - logs:GetLogEvents
+  #     - logs:FilterLogEvents
+  #     - s3:PutObject
+  #     - s3:GetObject
+  #     - s3:PutObjectAcl
+  #     - ec2:CreateNetworkInterface
+  #     - ec2:DescribeNetworkInterfaces
+  #     - ec2:DeleteNetworkInterface
+  #     - ec2:AssignPrivateIpAddresses
+  #     - ec2:UnassignPrivateIpAddresses
+  #     - ec2:CreateInternetGateway
+  #   Resource:
+  #     - 'arn:aws:logs:*:153874506602:log-group:*'
+  #     - 'arn:aws:s3:::${self:custom.bucket}/*'
+  #     - '*'
+
+# Endpoints
+functions:
+  # Transactions Endpoints 
+  testApi:
+    handler: ./src/functions/transaction/handlers/testApi.handler
+    events:
+      - http:
+          method: get
+          path: api/transaction/testapi
+          private: false
+  apiLabTest:
+    handler: ./src/functions/transaction/handlers/apiLabTest.handler
+    events:
+      - http:
+          method: post
+          path: api/transaction/labtest
+          private: false 
+  getTest:
+    # middleware: ./src/middleware/verifyToken.verifyToken
+    handler: ./src/functions/transaction/handlers/getTest.handler
+    events:
+      - http:
+          method: get
+          path: api/transaction/list/test
+          private: false
+  healthShopTransaction:
+    handler: ./src/functions/transaction/handlers/healthShopTransaction.handler
+    events:
+      - http:
+          method: post
+          path: api/transaction/healthshop
+          private: false        
+  getHealthShopTransaction:
+    handler: ./src/functions/transaction/handlers/getHealthShopTransaction.handler
+    events:
+      - http:
+          method: get
+          path: api/transaction/fetch/healthshop
+          private: false 
+  # Users Endpoints 
+  login:
+    # middleware: ./src/middleware/verifyToken.verfiyTokenDefault
+    handler: ./src/functions/user/handlers/login.handler
+    events:
+      - http:
+          method: post
+          path: api/login/accout
+          private: false
+  registerByAdmin:
+    # middleware: ./src/middleware/verifyToken.verfiyTokenDefault
+    handler: ./src/functions/user/handlers/registerByAdmin.handler
+    events:
+      - http:
+          method: post
+          path: api/register/account/byadmin
+          private: false 
+  # addAuthor:
+  #   handler: ./src/functions/author/handler.addAuthor
+  #   timeout: 900
+  #   events:
+  #     - http:
+  #         method: post
+  #         path: authors
+  #         private: false
+  # updateAuthor:
+  #   handler: ./src/functions/author/handler.updateAuthor
+  #   events:
+  #     - http:
+  #         method: put
+  #         path: authors
+  #         private: false        
+  # deleteAuthor:
+  #   handler: ./src/functions/author/handler.deleteAuthor
+  #   timeout: 900
+  #   events:
+  #     - http:
+  #         method: delete
+  #         path: authors/{id}
+  #         private: false
+  # # Publisher Endpoints 
+  # getPublishers:
+  #   handler: ./src/functions/publisher/handler.getPublishers
+  #   events:
+  #     - http:
+  #         method: get
+  #         path: publishers
+  #         private: false
+  # getPublisher:
+  #   handler: ./src/functions/publisher/handler.getPublisher
+  #   timeout: 900
+  #   events:
+  #     - http:
+  #         method: get
+  #         path: publishers/{id}
+  #         private: false 
+  # addPublisher:
+  #   handler: ./src/functions/publisher/handler.addPublisher
+  #   events:
+  #     - http:
+  #         method: post
+  #         path: publishers
+  #         private: false
+  # updatePublisher:
+  #   handler: ./src/functions/publisher/handler.updatePublisher
+  #   events:
+  #     - http:
+  #         method: put
+  #         path: publishers
+  #         private: false        
+  # deletePublisher:
+  #   handler: ./src/functions/publisher/handler.deletePublisher
+  #   events:
+  #     - http:
+  #         method: delete
+  #         path: publishers/{id}
+  #         private: false        
